@@ -1,5 +1,7 @@
 /// <reference path="../typings/index.d.ts" />
 "use strict";
+var Random = require("random-js");
+var random = Random(Random.engines.mt19937().autoSeed());
 var non_memory_map_1 = require("non-memory-map");
 var MarkovChain = (function () {
     function MarkovChain(path, size) {
@@ -137,7 +139,7 @@ var MarkovChain = (function () {
     MarkovChain.prototype.getFirstWord = function () {
         var length = this.map.get("firstWordsLength");
         var totalHits = this.map.get("firstWordsHits");
-        var target = Math.round(Math.random() * totalHits);
+        var target = random.integer(0, totalHits);
         var firstWords = this.map.get("firstWords");
         var firstIndexes = this.map.get("firstWordsIndexes");
         var seen = 0;
@@ -203,7 +205,7 @@ var MarkovChain = (function () {
             if (totalHits == 0) {
                 return "break";
             }
-            var target = Math.round(Math.random() * totalHits);
+            var target = random.integer(0, totalHits);
             var seen = 0;
             this_1.forEachChild(chain, function (word, child) {
                 seen += child.get("hits");

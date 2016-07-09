@@ -1,5 +1,8 @@
 /// <reference path="../typings/index.d.ts" />
 
+let Random = require("random-js");
+let random = Random(Random.engines.mt19937().autoSeed());
+
 import {NonMemoryMap} from "non-memory-map";
 
 export default class MarkovChain {
@@ -167,7 +170,7 @@ export default class MarkovChain {
     private getFirstWord() {
         let length:number = this.map.get("firstWordsLength");
         let totalHits:number = this.map.get("firstWordsHits");
-        let target = Math.round(Math.random() * totalHits);
+        let target = random.integer(0,totalHits);
 
         let firstWords = this.map.get("firstWords");
         let firstIndexes = this.map.get("firstWordsIndexes");
@@ -246,7 +249,7 @@ export default class MarkovChain {
             if(!totalHits) {break;}
             if(totalHits == 0) {break;}
             
-            let target = Math.round(Math.random() * totalHits);
+            let target = random.integer(0,totalHits);
             let seen = 0;
 
             this.forEachChild(chain,(word,child) => {
