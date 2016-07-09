@@ -1,10 +1,10 @@
 {
   "name": "markov-ultra",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "My modified markov chain algorithm to generate pseudorandom sentences from a learned database",
   "main": "js/index.js",
   "dependencies": {
-    "non-memory-map": "^1.0.1"
+    "non-memory-map": "^1.0.2"
   },
   "devDependencies": {
     "browserify": "latest",
