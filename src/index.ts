@@ -13,6 +13,7 @@ export default class MarkovChain {
 
         if(!this.map.get("firstWords")) {
             this.map.set("firstWords",{});
+            this.map.set("firstWordsIndexes",{});
             this.map.set("firstWordsHits",0);
             this.map.set("firstWordsLength",0);
         }
@@ -62,7 +63,8 @@ export default class MarkovChain {
             let i = this.map.get("firstWordsLength");
             this.map.set("firstWordsLength",i + 1);
             let firstWords = this.map.get("firstWords");
-            firstWords.set(i,firstWord);
+            let firstWordsIndexes = this.map.get("firstWordsIndexes");
+            firstWordsIndexes.set(i,firstWord);
             firstWords.set(firstWord,1);
         }
 
@@ -78,21 +80,24 @@ export default class MarkovChain {
                 chain.set("childrenHits",0);
                 chain.set("length",0);
                 chain.set("children",{});
+                chain.set("childrenIndexes",{});
                 children = chain.get("children");
             }
+            let childrenIndexes = chain.get("childrenIndexes");
 
             let child = children.get(word);
             if(!child) {
                 let id = chain.get("length");
                 chain.set("length",id + 1);
 
-                children.set(id,word);
+                childrenIndexes.set(id,word);
 
                 children.set(word,{
                     length: 0,
                     hits: 0,
                     childrenHits: 0,
-                    children: {}
+                    children: {},
+                    childrenIndexes: {}
                 });
 
                 child = children.get(word);
@@ -109,11 +114,12 @@ export default class MarkovChain {
 
     private forEachChild(chain:NonMemoryMap,callback:(word:string,child:NonMemoryMap) => boolean) {
         let children = chain.get("children");
+        let childrenIndexes = chain.get("childrenIndexes");
 
         let length:number = chain.get("length");
         
         for(let i=0;i < length;i++) {
-            let name = children.get(i);
+            let name = childrenIndexes.get(i);
             let child = children.get(name);
 
             // console.log(i,name,child)
@@ -164,11 +170,12 @@ export default class MarkovChain {
         let target = Math.round(Math.random() * totalHits);
 
         let firstWords = this.map.get("firstWords");
+        let firstIndexes = this.map.get("firstWordsIndexes");
 
         let seen = 0;
 
         for(let i=0;i < length;i++) {
-            let word:string = firstWords.get(i);
+            let word:string = firstIndexes.get(i);
 
             let hits:number = firstWords.get(word);
 

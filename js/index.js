@@ -11,6 +11,7 @@ var MarkovChain = (function () {
         });
         if (!this.map.get("firstWords")) {
             this.map.set("firstWords", {});
+            this.map.set("firstWordsIndexes", {});
             this.map.set("firstWordsHits", 0);
             this.map.set("firstWordsLength", 0);
         }
@@ -54,7 +55,8 @@ var MarkovChain = (function () {
             var i = this.map.get("firstWordsLength");
             this.map.set("firstWordsLength", i + 1);
             var firstWords = this.map.get("firstWords");
-            firstWords.set(i, firstWord);
+            var firstWordsIndexes = this.map.get("firstWordsIndexes");
+            firstWordsIndexes.set(i, firstWord);
             firstWords.set(firstWord, 1);
         }
         iterator(words, function (word, i, reset) {
@@ -68,18 +70,21 @@ var MarkovChain = (function () {
                 chain.set("childrenHits", 0);
                 chain.set("length", 0);
                 chain.set("children", {});
+                chain.set("childrenIndexes", {});
                 children = chain.get("children");
             }
+            var childrenIndexes = chain.get("childrenIndexes");
             var child = children.get(word);
             if (!child) {
                 var id = chain.get("length");
                 chain.set("length", id + 1);
-                children.set(id, word);
+                childrenIndexes.set(id, word);
                 children.set(word, {
                     length: 0,
                     hits: 0,
                     childrenHits: 0,
-                    children: {}
+                    children: {},
+                    childrenIndexes: {}
                 });
                 child = children.get(word);
             }
@@ -91,9 +96,10 @@ var MarkovChain = (function () {
     };
     MarkovChain.prototype.forEachChild = function (chain, callback) {
         var children = chain.get("children");
+        var childrenIndexes = chain.get("childrenIndexes");
         var length = chain.get("length");
         for (var i = 0; i < length; i++) {
-            var name_1 = children.get(i);
+            var name_1 = childrenIndexes.get(i);
             var child = children.get(name_1);
             // console.log(i,name,child)
             if (callback(name_1, child)) {
@@ -133,9 +139,10 @@ var MarkovChain = (function () {
         var totalHits = this.map.get("firstWordsHits");
         var target = Math.round(Math.random() * totalHits);
         var firstWords = this.map.get("firstWords");
+        var firstIndexes = this.map.get("firstWordsIndexes");
         var seen = 0;
         for (var i = 0; i < length; i++) {
-            var word = firstWords.get(i);
+            var word = firstIndexes.get(i);
             var hits = firstWords.get(word);
             seen += hits;
             if (seen >= target) {
