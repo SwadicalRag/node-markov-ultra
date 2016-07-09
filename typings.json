@@ -6,5 +6,7 @@
   "files": [
     "./definitions/index.d.ts"
   ],
-  "dependencies": {}
+  "dependencies": {
+    "non-memory-map": "github:SwadicalRag/node-non-memory-map"
+  }
 }

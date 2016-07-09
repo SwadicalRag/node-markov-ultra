@@ -4,8 +4,7 @@
   "description": "My modified markov chain algorithm to generate pseudorandom sentences from a learned database",
   "main": "js/index.js",
   "dependencies": {
-    "deepcopy": "^0.6.3",
-    "node-lmdb": "^0.4.1"
+    "non-memory-map": "^1.0.1"
   },
   "devDependencies": {
     "browserify": "latest",
