@@ -1,4 +1,5 @@
 /// <reference path="../typings/index.d.ts" />
+import { NonMemoryMap } from "non-memory-map";
 export default class MarkovChain {
     private path;
     private size;
@@ -13,5 +14,6 @@ export default class MarkovChain {
     private getSentenceHead(sentence, depth);
     private getFirstWord();
     getFirstWordChain(word: string): any;
-    generate(depth?: number, length?: number): string;
+    followChain(sentence: string[], start?: NonMemoryMap): NonMemoryMap;
+    generate(depth?: number, length?: number, start?: string): string;
 }

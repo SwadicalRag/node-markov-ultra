@@ -157,16 +157,44 @@ var MarkovChain = (function () {
             return children.get(word);
         }
     };
-    MarkovChain.prototype.generate = function (depth, length) {
+    MarkovChain.prototype.followChain = function (sentence, start) {
+        var chain = start || this.map;
+        this.forEach(sentence, function (word) {
+            var children = chain.get("children");
+            if (!children) {
+                chain = null;
+                return true;
+            }
+            chain = children.get(word);
+            if (!chain) {
+                chain = null;
+                return true;
+            }
+        });
+        return chain;
+    };
+    MarkovChain.prototype.generate = function (depth, length, start) {
         if (depth === void 0) { depth = 1; }
         var currentDepth = 1;
         this.map.beginTransaction(); // START TRANSACTION
-        var sentence = [this.getFirstWord()];
-        if (!sentence[0]) {
-            this.map.commit(); // END TRANSACTION
-            return "";
+        var chain;
+        var sentence = [];
+        if (start) {
+            sentence = this.getWords(start);
+            chain = this.followChain(sentence);
+            if (!chain) {
+                this.map.commit(); // END TRANSACTION
+                return "";
+            }
         }
-        var chain = this.getFirstWordChain(sentence[0]);
+        else {
+            sentence[0] = this.getFirstWord();
+            if (!sentence[0]) {
+                this.map.commit(); // END TRANSACTION
+                return "";
+            }
+            chain = this.getFirstWordChain(sentence[0]);
+        }
         var _loop_1 = function() {
             var totalHits = chain.get("childrenHits");
             if (!totalHits) {

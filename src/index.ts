@@ -196,17 +196,50 @@ export default class MarkovChain {
         }
     }
 
-    generate(depth:number = 1,length?:number) {
+    followChain(sentence:string[],start?:NonMemoryMap):NonMemoryMap {
+        let chain = start || this.map;
+
+        this.forEach(sentence,(word) => {
+            let children = chain.get("children");
+
+            if(!children) {chain = null; return true;}
+
+            chain = children.get(word);
+
+            if(!chain) {chain = null; return true;}
+        });
+
+        return chain;
+    }
+
+    generate(depth:number = 1,length?:number,start?:string) {
         let currentDepth = 1;
 
         this.map.beginTransaction(); // START TRANSACTION
 
-        let sentence:string[] = [this.getFirstWord()];
-        if(!sentence[0]) {
-            this.map.commit(); // END TRANSACTION
-            return "";
+        let chain:NonMemoryMap;
+
+        let sentence:string[] = [];
+        if(start) {
+            sentence = this.getWords(start);
+
+            chain = this.followChain(sentence);
+
+            if(!chain) {
+                this.map.commit(); // END TRANSACTION
+                return "";
+            }
         }
-        let chain:NonMemoryMap = this.getFirstWordChain(sentence[0]);
+        else {
+            sentence[0] = this.getFirstWord();
+
+            if(!sentence[0]) {
+                this.map.commit(); // END TRANSACTION
+                return "";
+            }
+
+            chain = this.getFirstWordChain(sentence[0]);
+        }
 
         while(true) {
             let totalHits:number = chain.get("childrenHits");
