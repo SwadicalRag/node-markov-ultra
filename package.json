@@ -1,0 +1,35 @@
+{
+  "name": "markov-ultra",
+  "version": "1.0.0",
+  "description": "My modified markov chain algorithm to generate pseudorandom sentences from a learned database",
+  "main": "js/index.js",
+  "dependencies": {
+    "deepcopy": "^0.6.3",
+    "node-lmdb": "^0.4.1"
+  },
+  "devDependencies": {
+    "browserify": "latest",
+    "gulp-notify": "latest",
+    "gulp-sourcemaps": "^1.6.0",
+    "gulp-typescript": "latest",
+    "gulp-util": "latest",
+    "merge2": "^1.0.2",
+    "tsify": "latest",
+    "vinyl-source-stream": "latest",
+    "watchify": "latest"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SwadicalRag/node-markov-ultra.git"
+  },
+  "author": "SwadicalRag",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/SwadicalRag/node-markov-ultra/issues"
+  },
+  "homepage": "https://github.com/SwadicalRag/node-markov-ultra#readme",
+  "bin": {}
+}

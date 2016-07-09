@@ -1,0 +1,17 @@
+{
+    "compilerOptions": {
+        "target": "es3",
+        "module": "commonjs",
+        "sourceMap": true,
+		"outDir": "js",
+        "watch": true,
+        "declaration": true
+    },
+    "exclude": [
+        "node_modules",
+        ".vscode",
+        "js",
+        "maps",
+        "definitions"
+    ]
+}

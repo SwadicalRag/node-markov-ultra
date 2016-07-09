@@ -1,0 +1,10 @@
+{
+  "name": "markov-ultra",
+  "globalDependencies": {
+    "node": "registry:env/node#6.0.0+20160622202520"
+  },
+  "files": [
+    "./definitions/index.d.ts"
+  ],
+  "dependencies": {}
+}
