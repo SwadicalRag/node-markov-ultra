@@ -199,23 +199,7 @@ export default class MarkovChain {
         }
     }
 
-    followChain(sentence:string[],start?:NonMemoryMap):NonMemoryMap {
-        let chain = start || this.map;
-
-        this.forEach(sentence,(word) => {
-            let children = chain.get("children");
-
-            if(!children) {chain = null; return true;}
-
-            chain = children.get(word);
-
-            if(!chain) {chain = null; return true;}
-        });
-
-        return chain;
-    }
-
-    generate(depth:number = 1,length?:number,start?:string) {
+    generate(depth:number = 2,length?:number,start?:string) {
         let currentDepth = 1;
 
         this.map.beginTransaction(); // START TRANSACTION
@@ -226,7 +210,7 @@ export default class MarkovChain {
         if(start) {
             sentence = this.getWords(start);
 
-            chain = this.followChain(sentence);
+            chain = this.getSentenceHead(sentence,depth);
 
             if(!chain) {
                 this.map.commit(); // END TRANSACTION

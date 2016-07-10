@@ -159,31 +159,15 @@ var MarkovChain = (function () {
             return children.get(word);
         }
     };
-    MarkovChain.prototype.followChain = function (sentence, start) {
-        var chain = start || this.map;
-        this.forEach(sentence, function (word) {
-            var children = chain.get("children");
-            if (!children) {
-                chain = null;
-                return true;
-            }
-            chain = children.get(word);
-            if (!chain) {
-                chain = null;
-                return true;
-            }
-        });
-        return chain;
-    };
     MarkovChain.prototype.generate = function (depth, length, start) {
-        if (depth === void 0) { depth = 1; }
+        if (depth === void 0) { depth = 2; }
         var currentDepth = 1;
         this.map.beginTransaction(); // START TRANSACTION
         var chain;
         var sentence = [];
         if (start) {
             sentence = this.getWords(start);
-            chain = this.followChain(sentence);
+            chain = this.getSentenceHead(sentence, depth);
             if (!chain) {
                 this.map.commit(); // END TRANSACTION
                 return "";
