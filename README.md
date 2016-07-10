@@ -1,3 +1,5 @@
+[![forthebadge](http://forthebadge.com/images/badges/as-seen-on-tv.svg)](http://forthebadge.com) [![npm](https://img.shields.io/npm/dt/express.svg?maxAge=2592000?style=flat-square)](https://www.npmjs.com/package/markov-ultra)
+
 # node-markov-ultra
 my modified markov chain algorithm to generate pseudorandom sentences from a learned database
 
